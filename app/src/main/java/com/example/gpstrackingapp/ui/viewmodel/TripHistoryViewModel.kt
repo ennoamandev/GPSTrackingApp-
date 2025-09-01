@@ -2,8 +2,12 @@ package com.example.gpstrackingapp.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import android.content.Context
 import com.example.gpstrackingapp.data.model.Trip
+import com.example.gpstrackingapp.data.model.LocationPoint
 import com.example.gpstrackingapp.data.repository.TripRepository
+import com.example.gpstrackingapp.util.DataExporter
+import com.example.gpstrackingapp.util.ExportFormat
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -14,7 +18,8 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class TripHistoryViewModel @Inject constructor(
-    private val tripRepository: TripRepository
+    private val tripRepository: TripRepository,
+    private val context: Context
 ) : ViewModel() {
     
     private val _trips = MutableStateFlow<List<Trip>>(emptyList())
@@ -25,6 +30,12 @@ class TripHistoryViewModel @Inject constructor(
     
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error.asStateFlow()
+    
+    private val _isExporting = MutableStateFlow(false)
+    val isExporting: StateFlow<Boolean> = _isExporting.asStateFlow()
+    
+    private val _exportProgress = MutableStateFlow<String?>(null)
+    val exportProgress: StateFlow<String?> = _exportProgress.asStateFlow()
     
     init {
         loadTrips()
@@ -117,6 +128,92 @@ class TripHistoryViewModel @Inject constructor(
      */
     fun clearError() {
         _error.value = null
+    }
+    
+    /**
+     * Export single trip data
+     */
+    fun exportTrip(
+        trip: Trip,
+        locationPoints: List<LocationPoint>,
+        format: ExportFormat,
+        outputStream: java.io.OutputStream
+    ): Result<Unit> {
+        return try {
+            _isExporting.value = true
+            _exportProgress.value = "Exporting trip data..."
+            
+            val dataExporter = DataExporter(context)
+            val result = when (format) {
+                ExportFormat.CSV -> dataExporter.exportToCSV(trip, locationPoints, outputStream)
+                ExportFormat.JSON -> dataExporter.exportToJSON(trip, locationPoints, outputStream)
+            }
+            
+            _isExporting.value = false
+            _exportProgress.value = null
+            result
+        } catch (e: Exception) {
+            _isExporting.value = false
+            _exportProgress.value = null
+            _error.value = "Export failed: ${e.message}"
+            Result.failure(e)
+        }
+    }
+    
+    /**
+     * Export all trips data
+     */
+    fun exportAllTrips(
+        format: ExportFormat,
+        outputStream: java.io.OutputStream
+    ): Result<Unit> {
+        return try {
+            _isExporting.value = true
+            _exportProgress.value = "Exporting all trips data..."
+            
+            val trips = _trips.value
+            val locationPointsMap = mutableMapOf<Long, List<LocationPoint>>()
+            
+            // Collect location points for all trips
+            trips.forEach { trip ->
+                val locationPoints = tripRepository.getAllLocationPointsForTrip(trip.id)
+                locationPointsMap[trip.id] = locationPoints
+            }
+            
+            val dataExporter = DataExporter(context)
+            val result = when (format) {
+                ExportFormat.CSV -> dataExporter.exportTripsToCSV(trips, locationPointsMap, outputStream)
+                ExportFormat.JSON -> {
+                    // For JSON, we'll export each trip individually and combine them
+                    val combinedData = buildString {
+                        appendLine("[")
+                        trips.forEachIndexed { index, trip ->
+                            val locationPoints = locationPointsMap[trip.id] ?: emptyList()
+                            val tripJson = dataExporter.exportToJSON(trip, locationPoints, outputStream)
+                            if (index < trips.size - 1) appendLine(",")
+                        }
+                        appendLine("]")
+                    }
+                    Result.success(Unit)
+                }
+            }
+            
+            _isExporting.value = false
+            _exportProgress.value = null
+            result
+        } catch (e: Exception) {
+            _isExporting.value = false
+            _exportProgress.value = null
+            _error.value = "Export failed: ${e.message}"
+            Result.failure(e)
+        }
+    }
+    
+    /**
+     * Get location points for a specific trip
+     */
+    suspend fun getLocationPointsForTrip(tripId: Long): List<LocationPoint> {
+        return tripRepository.getAllLocationPointsForTrip(tripId)
     }
 }
 

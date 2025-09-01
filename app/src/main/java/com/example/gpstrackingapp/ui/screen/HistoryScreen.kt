@@ -16,8 +16,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.gpstrackingapp.R
 import com.example.gpstrackingapp.data.model.Trip
+import com.example.gpstrackingapp.ui.component.ExportDialog
 import com.example.gpstrackingapp.ui.viewmodel.TripHistoryViewModel
 import com.example.gpstrackingapp.ui.viewmodel.TripStatistics
+import com.example.gpstrackingapp.util.ExportFormat
 import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -37,6 +39,7 @@ fun HistoryScreen(
     
     var showDeleteDialog by remember { mutableStateOf<Trip?>(null) }
     var selectedTrip by remember { mutableStateOf<Trip?>(null) }
+    var showExportDialog by remember { mutableStateOf(false) }
     
     Scaffold(
         topBar = {
@@ -48,6 +51,11 @@ fun HistoryScreen(
                     }
                 },
                 actions = {
+                    if (trips.isNotEmpty()) {
+                        IconButton(onClick = { showExportDialog = true }) {
+                            Icon(Icons.Default.Download, contentDescription = "Export Data")
+                        }
+                    }
                     IconButton(onClick = onNavigateToSettings) {
                         Icon(Icons.Default.Settings, contentDescription = "Settings")
                     }
@@ -93,7 +101,12 @@ fun HistoryScreen(
                         TripCard(
                             trip = trip,
                             onTripClick = { selectedTrip = trip },
-                            onDeleteClick = { showDeleteDialog = trip }
+                            onDeleteClick = { showDeleteDialog = trip },
+                            onExportClick = { 
+                                // Show export dialog for this specific trip
+                                selectedTrip = trip
+                                showExportDialog = true
+                            }
                         )
                     }
                 }
@@ -130,6 +143,32 @@ fun HistoryScreen(
         LaunchedEffect(errorMessage) {
             // Show error snackbar
         }
+    }
+    
+    // Export dialog
+    if (showExportDialog) {
+        ExportDialog(
+            trip = selectedTrip, // Export specific trip or all trips if null
+            onDismiss = { 
+                showExportDialog = false
+                if (selectedTrip != null) {
+                    selectedTrip = null // Clear selected trip when closing export dialog
+                }
+            },
+            onExportSuccess = { 
+                showExportDialog = false
+                if (selectedTrip != null) {
+                    selectedTrip = null // Clear selected trip when export is successful
+                }
+            },
+            onExportError = { errorMessage ->
+                // Error will be handled by ViewModel
+                showExportDialog = false
+                if (selectedTrip != null) {
+                    selectedTrip = null // Clear selected trip when export fails
+                }
+            }
+        )
     }
 }
 
@@ -253,7 +292,8 @@ fun EmptyState(
 fun TripCard(
     trip: Trip,
     onTripClick: () -> Unit,
-    onDeleteClick: () -> Unit
+    onDeleteClick: () -> Unit,
+    onExportClick: () -> Unit
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -299,6 +339,14 @@ fun TripCard(
                         style = MaterialTheme.typography.bodySmall
                     )
                 }
+            }
+            
+            IconButton(onClick = onExportClick) {
+                Icon(
+                    imageVector = Icons.Default.Download,
+                    contentDescription = "Export trip",
+                    tint = MaterialTheme.colorScheme.primary
+                )
             }
             
             IconButton(onClick = onDeleteClick) {
