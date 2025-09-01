@@ -198,7 +198,7 @@ fun MapSection(
     onRefreshPermission: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val defaultLocation = LatLng(37.7749, -122.4194) // San Francisco
+    val defaultLocation = LatLng(35.1739, -2.9342) // Your City
     
     // Update camera position when current location changes
     val cameraPositionState = rememberCameraPositionState {
