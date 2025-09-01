@@ -44,7 +44,7 @@ class DataExporter(private val context: Context) {
             
             // Write location points data
             locationPoints.forEach { point ->
-                writer.write("${dateFormat.format(point.timestamp),")
+                writer.write("${dateFormat.format(point.timestamp)},")
                 writer.write("${String.format("%.6f", point.latitude)},")
                 writer.write("${String.format("%.6f", point.longitude)},")
                 writer.write("${point.altitude?.let { String.format("%.2f", it) } ?: "N/A"},")
