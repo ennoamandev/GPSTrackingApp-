@@ -120,7 +120,7 @@ cd GPSTrackingApp
 2. Create a new project or select existing one
 3. Enable Maps SDK for Android
 4. Create API credentials
-5. Add your API key to `local.properties`:
+5. Add your API key to `secrets.properties`:
    ```properties
    MAPS_API_KEY=your_google_maps_api_key_here
    ```
@@ -168,38 +168,7 @@ The app requires the following permissions:
 4. Configure auto-stop behavior
 5. Reset to default values if needed
 
-## Data Models
 
-### Trip Entity
-```kotlin
-data class Trip(
-    val id: Long = 0,
-    val startTime: LocalDateTime,
-    val endTime: LocalDateTime? = null,
-    val duration: Long = 0,
-    val totalDistance: Double = 0.0,
-    val averageSpeed: Double = 0.0,
-    val maxSpeed: Double = 0.0,
-    val isCompleted: Boolean = false,
-    val createdAt: LocalDateTime = LocalDateTime.now()
-)
-```
-
-### Location Point Entity
-```kotlin
-data class LocationPoint(
-    val id: Long = 0,
-    val tripId: Long,
-    val latitude: Double,
-    val longitude: Double,
-    val altitude: Double? = null,
-    val speed: Float,
-    val accuracy: Float? = null,
-    val bearing: Float? = null,
-    val timestamp: LocalDateTime,
-    val isMoving: Boolean = true
-)
-```
 
 ## Contributing
 
