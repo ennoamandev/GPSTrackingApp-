@@ -58,11 +58,13 @@ fun TrackingScreen(
     
     // Check permissions on first load only
     LaunchedEffect(Unit) {
-        if (!permissionHandler.hasAllRequiredPermissions() && !hasShownPermissionDialog) {
+        val currentPermissionState = permissionHandler.hasLocationPermission()
+        hasLocationPermission = currentPermissionState
+        
+        if (!currentPermissionState && !hasShownPermissionDialog) {
             showPermissionDialog = true
             hasShownPermissionDialog = true
-        } else if (permissionHandler.hasAllRequiredPermissions()) {
-            hasLocationPermission = true
+        } else if (currentPermissionState) {
             // Try to get initial location immediately
             viewModel.loadInitialLocation()
         }
@@ -77,6 +79,8 @@ fun TrackingScreen(
                 val newPermissionState = permissionHandler.hasLocationPermission()
                 if (newPermissionState != hasLocationPermission) {
                     hasLocationPermission = newPermissionState
+                    // Reset the dialog flag when permission state changes
+                    hasShownPermissionDialog = false
                     if (newPermissionState && currentLocation == null) {
                         // Try to get initial location if we have permissions but no location
                         viewModel.loadInitialLocation()
@@ -174,15 +178,19 @@ fun TrackingScreen(
     // Permission Dialog
     if (showPermissionDialog) {
         PermissionDialog(
-            onDismiss = { showPermissionDialog = false },
+            onDismiss = { 
+                showPermissionDialog = false
+                // Don't reset hasShownPermissionDialog here to prevent repeated prompts
+            },
             onGrantPermission = {
                 onRequestPermissions()
                 showPermissionDialog = false
                 // Update permission state after a short delay
                 kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.Dispatchers.Main).launch {
                     delay(1500) // Wait for permission dialog to close and system to process
-                    hasLocationPermission = permissionHandler.hasLocationPermission()
-                    if (hasLocationPermission) {
+                    val newPermissionState = permissionHandler.hasLocationPermission()
+                    hasLocationPermission = newPermissionState
+                    if (newPermissionState) {
                         viewModel.loadInitialLocation()
                     }
                 }
@@ -198,7 +206,7 @@ fun MapSection(
     onRefreshPermission: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val defaultLocation = LatLng(35.1739, -2.9342) // Your City
+    val defaultLocation = LatLng(35.173992, -2.92812) // Your City
     
     // Update camera position when current location changes
     val cameraPositionState = rememberCameraPositionState {

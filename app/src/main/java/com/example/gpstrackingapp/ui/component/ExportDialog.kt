@@ -28,14 +28,15 @@ fun ExportDialog(
     trip: Trip?,
     onDismiss: () -> Unit,
     onExportSuccess: () -> Unit,
-    onExportError: (String) -> Unit
+    onExportError: (String) -> Unit,
+    onExportRequest: (Trip?, ExportFormat, android.net.Uri) -> Unit
 ) {
     val context = LocalContext.current
     val dataExporter = remember { DataExporter(context) }
-    
+
     var selectedFormat by remember { mutableStateOf(ExportFormat.CSV) }
     var isExporting by remember { mutableStateOf(false) }
-    
+
     val exportLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.CreateDocument(
             mimeType = dataExporter.getMimeType(selectedFormat)
@@ -43,8 +44,7 @@ fun ExportDialog(
     ) { uri ->
         if (uri != null) {
             isExporting = true
-            // Export will be handled by the parent component
-            onExportSuccess()
+            onExportRequest(trip, selectedFormat, uri)
         }
         onDismiss()
     }

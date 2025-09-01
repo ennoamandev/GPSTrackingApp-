@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    
+    <!-- Location pin shadow -->
+    <path android:fillColor="#000000"
+        android:fillAlpha="0.2"
+        android:pathData="M54,72 L58,76 L50,76 Z" />
+    
+    <!-- Main location pin -->
+    <path android:fillColor="#ffffff"
+        android:pathData="M54,24 C44,24 36,32 36,42 C36,52 54,72 54,72 C54,72 72,52 72,42 C72,32 64,24 54,24 Z" />
+    
+    <!-- Inner circle (hole in pin) -->
+    <path android:fillColor="#307ec6"
+        android:pathData="M54,36 C48,36 44,40 44,46 C44,52 48,56 54,56 C60,56 64,52 64,46 C64,40 60,36 54,36 Z" />
+    
+    <!-- Pin highlight for 3D effect -->
+    <path android:fillColor="#ffffff"
+        android:fillAlpha="0.3"
+        android:pathData="M54,24 C44,24 36,32 36,42 C36,52 54,72 54,72 C54,72 72,52 72,42 C72,32 64,24 54,24 Z" />
+</vector>

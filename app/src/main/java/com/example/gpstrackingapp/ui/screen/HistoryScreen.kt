@@ -1,5 +1,7 @@
 package com.example.gpstrackingapp.ui.screen
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -9,17 +11,20 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.gpstrackingapp.R
 import com.example.gpstrackingapp.data.model.Trip
 import com.example.gpstrackingapp.ui.component.ExportDialog
 import com.example.gpstrackingapp.ui.viewmodel.TripHistoryViewModel
 import com.example.gpstrackingapp.ui.viewmodel.TripStatistics
 import com.example.gpstrackingapp.util.ExportFormat
+import kotlinx.coroutines.launch
 import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -36,10 +41,44 @@ fun HistoryScreen(
     val trips by viewModel.trips.collectAsStateWithLifecycle()
     val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
     val error by viewModel.error.collectAsStateWithLifecycle()
+    val isExporting by viewModel.isExporting.collectAsStateWithLifecycle()
+    val exportProgress by viewModel.exportProgress.collectAsStateWithLifecycle()
     
     var showDeleteDialog by remember { mutableStateOf<Trip?>(null) }
     var selectedTrip by remember { mutableStateOf<Trip?>(null) }
     var showExportDialog by remember { mutableStateOf(false) }
+    
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
+    
+    // Handle export request
+    val handleExportRequest: (Trip?, ExportFormat, android.net.Uri) -> Unit = { trip, format, uri ->
+        coroutineScope.launch {
+            try {
+                val outputStream = context.contentResolver.openOutputStream(uri)
+                if (outputStream != null) {
+                    val result = if (trip != null) {
+                        // Export single trip
+                        val locationPoints = viewModel.getLocationPointsForTrip(trip.id)
+                        viewModel.exportTrip(trip, locationPoints, format, outputStream)
+                    } else {
+                        // Export all trips
+                        viewModel.exportAllTrips(format, outputStream)
+                    }
+                    
+                    outputStream.close()
+                    
+                    if (result.isSuccess) {
+                        // Show success message or handle success
+                    } else {
+                        // Error is already handled by ViewModel
+                    }
+                }
+            } catch (e: Exception) {
+                // Handle file access error
+            }
+        }
+    }
     
     Scaffold(
         topBar = {
@@ -167,7 +206,8 @@ fun HistoryScreen(
                 if (selectedTrip != null) {
                     selectedTrip = null // Clear selected trip when export fails
                 }
-            }
+            },
+            onExportRequest = handleExportRequest
         )
     }
 }

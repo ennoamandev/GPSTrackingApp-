@@ -26,11 +26,18 @@ This GPS tracking app was developed as a technical assessment showcasing:
 - **Trip history** with detailed statistics and analytics
 - **Data persistence** using Room database
 
+### 📤 Data Export & Analysis
+- **CSV Export**: Export trip data in Excel-compatible format
+- **JSON Export**: Structured data format for API integration
+- **Bulk Export**: Export all trips or individual trip data
+- **Comprehensive Data**: Includes location points, metrics, and statistics
+
 ### ⚙️ User Experience
-- **Intuitive Material Design 3** interface
+- **Intuitive Material Design 3** interface with custom blue color scheme
 - **Permission handling** with user-friendly dialogs
 - **Settings customization** for tracking preferences
 - **Responsive UI** with smooth animations
+- **Custom App Icon** with location pin design
 
 ## 🏗️ Architecture & Design Patterns
 
@@ -75,6 +82,16 @@ com.example.gpstrackingapp/
 ├── GPSTrackingApplication.kt
 └── MainActivity.kt
 ```
+
+## 🆕 Recent Updates
+
+### Version 2.0 - Enhanced Features
+- ✅ **Data Export System**: Complete CSV/JSON export functionality
+- ✅ **Custom Color Scheme**: Professional blue theme (#307ec6, #41c7fa)
+- ✅ **Custom App Icon**: Location pin design with gradient background
+- ✅ **Permission Optimization**: Improved location permission handling
+- ✅ **UI Enhancements**: Better user experience and visual consistency
+- ✅ **Code Quality**: Fixed compilation errors and improved architecture
 
 ## 🚀 Getting Started
 

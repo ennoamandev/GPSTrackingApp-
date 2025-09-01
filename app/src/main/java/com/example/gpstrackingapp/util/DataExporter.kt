@@ -77,7 +77,7 @@ class DataExporter(private val context: Context) {
                 appendLine("  \"trip\": {")
                 appendLine("    \"id\": ${trip.id},")
                 appendLine("    \"startTime\": \"${dateFormat.format(trip.startTime)}\",")
-                appendLine("    \"endTime\": ${if (trip.endTime != null) "\"${dateFormat.format(trip.endTime)}\"" else "null},")
+                appendLine("    \"endTime\": ${if (trip.endTime != null) "\"${dateFormat.format(trip.endTime)}\"" else "null"},")
                 appendLine("    \"duration\": ${trip.duration},")
                 appendLine("    \"totalDistance\": ${String.format("%.2f", trip.totalDistance)},")
                 appendLine("    \"averageSpeed\": ${String.format("%.2f", trip.averageSpeed)},")

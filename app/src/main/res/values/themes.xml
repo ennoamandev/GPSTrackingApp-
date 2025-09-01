@@ -6,12 +6,32 @@
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryContainer">@color/primary_variant</item>
         <item name="colorOnPrimary">@color/white</item>
+        <item name="colorOnPrimaryContainer">@color/white</item>
+        
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/secondary</item>
         <item name="colorSecondaryContainer">@color/secondary_variant</item>
         <item name="colorOnSecondary">@color/black</item>
+        <item name="colorOnSecondaryContainer">@color/black</item>
+        
+        <!-- Surface colors -->
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorOnSurface">@color/on_surface</item>
+        <item name="colorSurfaceVariant">@color/background</item>
+        <item name="colorOnSurfaceVariant">@color/on_surface_variant</item>
+        
+        <!-- Background colors -->
+        <item name="android:colorBackground">@color/background</item>
+        <item name="colorOnBackground">@color/on_surface</item>
+        
+        <!-- Error colors -->
+        <item name="colorError">@color/error</item>
+        <item name="colorOnError">@color/white</item>
+        
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryContainer</item>
+        <item name="android:statusBarColor">@color/primary</item>
+        <item name="android:windowLightStatusBar">false</item>
+        
         <!-- Customize your theme here. -->
     </style>
 </resources>

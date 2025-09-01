@@ -130,10 +130,10 @@ class TripHistoryViewModel @Inject constructor(
         _error.value = null
     }
     
-    /**
+        /**
      * Export single trip data
      */
-    fun exportTrip(
+    suspend fun exportTrip(
         trip: Trip,
         locationPoints: List<LocationPoint>,
         format: ExportFormat,
@@ -142,13 +142,13 @@ class TripHistoryViewModel @Inject constructor(
         return try {
             _isExporting.value = true
             _exportProgress.value = "Exporting trip data..."
-            
+
             val dataExporter = DataExporter(context)
             val result = when (format) {
                 ExportFormat.CSV -> dataExporter.exportToCSV(trip, locationPoints, outputStream)
                 ExportFormat.JSON -> dataExporter.exportToJSON(trip, locationPoints, outputStream)
             }
-            
+
             _isExporting.value = false
             _exportProgress.value = null
             result
@@ -160,26 +160,26 @@ class TripHistoryViewModel @Inject constructor(
         }
     }
     
-    /**
+        /**
      * Export all trips data
      */
-    fun exportAllTrips(
+    suspend fun exportAllTrips(
         format: ExportFormat,
         outputStream: java.io.OutputStream
     ): Result<Unit> {
         return try {
             _isExporting.value = true
             _exportProgress.value = "Exporting all trips data..."
-            
+
             val trips = _trips.value
             val locationPointsMap = mutableMapOf<Long, List<LocationPoint>>()
-            
+
             // Collect location points for all trips
             trips.forEach { trip ->
                 val locationPoints = tripRepository.getAllLocationPointsForTrip(trip.id)
                 locationPointsMap[trip.id] = locationPoints
             }
-            
+
             val dataExporter = DataExporter(context)
             val result = when (format) {
                 ExportFormat.CSV -> dataExporter.exportTripsToCSV(trips, locationPointsMap, outputStream)
@@ -197,7 +197,7 @@ class TripHistoryViewModel @Inject constructor(
                     Result.success(Unit)
                 }
             }
-            
+
             _isExporting.value = false
             _exportProgress.value = null
             result
