@@ -130,7 +130,7 @@ implementation("com.google.android.gms:play-services-location:21.0.1")
 2. **Configure Google Maps API**
    - Get API key from [Google Cloud Console](https://console.cloud.google.com/)
    - Enable Maps SDK for Android
-   - Add to `local.properties`:
+   - Add to `secrets.properties`:
      ```properties
      MAPS_API_KEY=your_api_key_here
      ```
