@@ -1,0 +1,73 @@
+<resources>
+    <string name="app_name">GPS Tracking App</string>
+    
+    <!-- Navigation -->
+    <string name="tracking">Tracking</string>
+    <string name="history">History</string>
+    <string name="settings">Settings</string>
+    
+    <!-- Tracking Screen -->
+    <string name="start_tracking">Start Tracking</string>
+    <string name="pause_tracking">Pause</string>
+    <string name="resume_tracking">Resume</string>
+    <string name="stop_tracking">Stop Tracking</string>
+    <string name="current_speed">Current Speed</string>
+    <string name="distance_traveled">Distance Traveled</string>
+    <string name="elapsed_time">Elapsed Time</string>
+    <string name="kmh">km/h</string>
+    <string name="km">km</string>
+    <string name="tracking_active">Tracking Active</string>
+    <string name="tracking_paused">Tracking Paused</string>
+    <string name="tracking_stopped">Tracking Stopped</string>
+    
+    <!-- History Screen -->
+    <string name="no_trips_recorded">No trips recorded yet</string>
+    <string name="trip_details">Trip Details</string>
+    <string name="start_time">Start Time</string>
+    <string name="end_time">End Time</string>
+    <string name="duration">Duration</string>
+    <string name="total_distance">Total Distance</string>
+    <string name="export_trip">Export Trip</string>
+    <string name="delete_trip">Delete Trip</string>
+    
+    <!-- Settings Screen -->
+    <string name="location_update_interval">Location Update Interval</string>
+    <string name="background_tracking">Background Tracking</string>
+    <string name="background_tracking_description">Allow tracking to continue when app is in background</string>
+    <string name="update_interval_1s">1 second</string>
+    <string name="update_interval_5s">5 seconds</string>
+    <string name="update_interval_10s">10 seconds</string>
+    <string name="auto_stop_tracking">Auto-stop Tracking</string>
+    <string name="auto_stop_tracking_description">Automatically stop tracking when no movement detected</string>
+    <string name="auto_stop_delay">Auto-stop Delay</string>
+    <string name="auto_stop_delay_description">Minutes of no movement before stopping</string>
+    
+    <!-- Permissions -->
+    <string name="location_permission_required">Location permission is required for GPS tracking</string>
+    <string name="background_location_permission_required">Background location permission is required for continuous tracking</string>
+    <string name="grant_permission">Grant Permission</string>
+    
+    <!-- Notifications -->
+    <string name="tracking_notification_title">GPS Tracking Active</string>
+    <string name="tracking_notification_text">Recording your location</string>
+    <string name="tracking_stopped_notification_title">Tracking Stopped</string>
+    <string name="tracking_stopped_notification_text">No movement detected for %1$d minutes</string>
+    
+    <!-- General -->
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="export">Export</string>
+    <string name="loading">Loading…</string>
+    <string name="error">Error</string>
+    <string name="success">Success</string>
+    
+    <!-- Units -->
+    <string name="meters">m</string>
+    <string name="kilometers">km</string>
+    <string name="miles">mi</string>
+    <string name="hours">h</string>
+    <string name="minutes">m</string>
+    <string name="seconds">s</string>
+</resources>
