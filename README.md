@@ -85,6 +85,15 @@ com.example.gpstrackingapp/
 
 ## 🆕 Recent Updates
 
+### Version 3.0 - Comprehensive Testing & Latest SDK
+- ✅ **Comprehensive Test Suite**: 41 unit and integration tests covering all components
+- ✅ **Latest Android SDK**: Updated to API level 35 with latest dependencies
+- ✅ **Test Coverage**: Data models, utilities, repositories, database, and UI components
+- ✅ **API Compatibility**: Fixed java.time to java.util.Date for API 24+ compatibility
+- ✅ **Modern Dependencies**: Updated to latest versions of Compose, Room, Hilt, and more
+- ✅ **Test Documentation**: Complete testing guide with examples and best practices
+- ✅ **Android 13+ Support**: Added POST_NOTIFICATIONS permission for latest Android versions
+
 ### Version 2.0 - Enhanced Features
 - ✅ **Data Export System**: Complete CSV/JSON export functionality
 - ✅ **Custom Color Scheme**: Professional blue theme (#307ec6, #41c7fa)
@@ -97,8 +106,9 @@ com.example.gpstrackingapp/
 
 ### Prerequisites
 - Android Studio Hedgehog or later
-- Android SDK 24+ (API level 24)
+- Android SDK 35 (API level 35) - Latest version
 - Google Maps API key
+- Java 17+ for development
 
 ### Setup Instructions
 
@@ -121,10 +131,23 @@ com.example.gpstrackingapp/
    - Sync Gradle files
    - Build and run on device/emulator
 
+4. **Run Tests** (Optional)
+   ```bash
+   # Run all tests
+   .\gradlew.bat test
+   
+   # Run unit tests only
+   .\gradlew.bat testDebugUnitTest
+   
+   # Use test runner script
+   .\run_tests.bat
+   ```
+
 ### Required Permissions
 - **Location Access** - For GPS tracking
 - **Background Location** - For continuous tracking
 - **Internet** - For Google Maps functionality
+- **Notifications** - For Android 13+ compatibility
 
 ## 📱 App Usage
 
@@ -145,6 +168,46 @@ com.example.gpstrackingapp/
 - Auto-stop behavior
 - Reset to defaults
 
+## 🧪 Testing
+
+### Test Suite Overview
+The project includes a comprehensive test suite with **41 tests** covering all major components:
+
+#### Unit Tests (`app/src/test/`)
+- **Data Models**: Trip, LocationPoint, TrackingMetrics formatting and validation
+- **Utilities**: Converters, DataExporter functionality
+- **Repositories**: TripRepository with proper mocking
+- **Location Manager**: Distance calculations, bearing, movement detection
+
+#### Integration Tests (`app/src/androidTest/`)
+- **Database**: Room database CRUD operations and relationships
+- **UI**: Compose screen testing and user interactions
+- **Services**: Background service testing
+
+### Test Dependencies
+- **JUnit 4**: Core testing framework
+- **Mockito**: Mocking framework for dependencies
+- **Room Testing**: In-memory database testing
+- **Compose Testing**: UI component testing
+- **Coroutines Testing**: Async code testing
+
+### Running Tests
+```bash
+# Run all tests
+.\gradlew.bat test
+
+# Run unit tests only
+.\gradlew.bat testDebugUnitTest
+
+# Run Android tests (requires device/emulator)
+.\gradlew.bat connectedAndroidTest
+
+# Generate test coverage report
+.\gradlew.bat jacocoTestReport
+```
+
+### Test Documentation
+See `TESTING.md` for detailed testing guide, best practices, and troubleshooting.
 
 ## 🔧 Development Highlights
 
@@ -165,6 +228,8 @@ com.example.gpstrackingapp/
 - **Comprehensive error handling**
 - **User-friendly permission flows**
 - **Accessibility considerations**
+- **Comprehensive test coverage** with 41 tests
+- **Modern Android SDK** (API 35) compatibility
 
 
 ## 🤝 Contributing
@@ -190,6 +255,8 @@ This project is licensed under the MIT License.
 
 **Developer**: Ennoaman  
 **Project**: GPS Tracking App Technical Assessment  
-**Technologies**: Android, Kotlin, Jetpack Compose, Room, MVVM
+**Technologies**: Android, Kotlin, Jetpack Compose, Room, MVVM, Testing  
+**SDK Version**: API 35 (Latest)  
+**Test Coverage**: 41 comprehensive tests
 
-*This project demonstrates my expertise in modern Android development and clean architecture principles.*
+*This project demonstrates my expertise in modern Android development, clean architecture principles, and comprehensive testing practices.*
