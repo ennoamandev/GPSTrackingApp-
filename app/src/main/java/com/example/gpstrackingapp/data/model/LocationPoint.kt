@@ -3,7 +3,7 @@ package com.example.gpstrackingapp.data.model
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import java.time.LocalDateTime
+import java.util.Date
 
 /**
  * Represents a GPS location point during tracking
@@ -29,7 +29,7 @@ data class LocationPoint(
     val speed: Float, // in m/s
     val accuracy: Float? = null,
     val bearing: Float? = null,
-    val timestamp: LocalDateTime,
+    val timestamp: Date,
     val isMoving: Boolean = true
 ) {
     /**

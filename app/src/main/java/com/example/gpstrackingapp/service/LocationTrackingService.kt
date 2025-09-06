@@ -15,7 +15,7 @@ import com.example.gpstrackingapp.util.PreferencesManager
 import com.google.android.gms.location.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
-import java.time.LocalDateTime
+import java.util.Date
 import javax.inject.Inject
 
 /**
@@ -146,7 +146,7 @@ class LocationTrackingService : Service() {
             speed = location.speed,
             accuracy = location.accuracy,
             bearing = location.bearing,
-            timestamp = LocalDateTime.now(),
+            timestamp = Date(),
             isMoving = location.speed > 0.5f
         )
         

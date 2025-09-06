@@ -2,7 +2,7 @@ package com.example.gpstrackingapp.data.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.time.LocalDateTime
+import java.util.Date
 
 /**
  * Represents a GPS tracking trip
@@ -11,14 +11,14 @@ import java.time.LocalDateTime
 data class Trip(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
-    val startTime: LocalDateTime,
-    val endTime: LocalDateTime? = null,
+    val startTime: Date,
+    val endTime: Date? = null,
     val duration: Long = 0, // in milliseconds
     val totalDistance: Double = 0.0, // in meters
     val averageSpeed: Float = 0f, // in m/s
     val maxSpeed: Float = 0f, // in m/s
     val isCompleted: Boolean = false,
-    val createdAt: LocalDateTime = LocalDateTime.now()
+    val createdAt: Date = Date()
 ) {
     /**
      * Get formatted duration string

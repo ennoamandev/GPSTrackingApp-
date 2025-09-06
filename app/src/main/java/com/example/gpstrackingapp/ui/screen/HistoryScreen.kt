@@ -25,13 +25,23 @@ import com.example.gpstrackingapp.ui.viewmodel.TripHistoryViewModel
 import com.example.gpstrackingapp.ui.viewmodel.TripStatistics
 import com.example.gpstrackingapp.util.ExportFormat
 import kotlinx.coroutines.launch
-import java.time.format.DateTimeFormatter
+import java.text.SimpleDateFormat
+import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 
 /**
+ * Helper function to format Date objects
+ */
+private fun formatDate(date: Date, pattern: String): String {
+    val formatter = SimpleDateFormat(pattern, Locale.getDefault())
+    return formatter.format(date)
+}
+
+/**
  * Screen to display trip history
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HistoryScreen(
     onNavigateBack: () -> Unit,
@@ -358,12 +368,12 @@ fun TripCard(
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = trip.startTime.format(DateTimeFormatter.ofPattern("MMM dd, yyyy")),
+                    text = formatDate(trip.startTime, "MMM dd, yyyy"),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = trip.startTime.format(DateTimeFormatter.ofPattern("HH:mm")),
+                    text = formatDate(trip.startTime, "HH:mm"),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -439,9 +449,9 @@ fun TripDetailsDialog(
         title = { Text(stringResource(R.string.trip_details)) },
         text = {
             Column {
-                DetailRow("Start Time", trip.startTime.format(DateTimeFormatter.ofPattern("MMM dd, yyyy HH:mm")))
+                DetailRow("Start Time", formatDate(trip.startTime, "MMM dd, yyyy HH:mm"))
                 trip.endTime?.let { endTime ->
-                    DetailRow("End Time", endTime.format(DateTimeFormatter.ofPattern("MMM dd, yyyy HH:mm")))
+                    DetailRow("End Time", formatDate(endTime, "MMM dd, yyyy HH:mm"))
                 }
                 DetailRow("Duration", trip.getFormattedDuration())
                 DetailRow("Distance", trip.getFormattedDistance())

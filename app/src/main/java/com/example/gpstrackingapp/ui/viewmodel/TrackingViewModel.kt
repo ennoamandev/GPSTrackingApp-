@@ -9,7 +9,7 @@ import com.example.gpstrackingapp.util.PreferencesManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
+import java.util.Date
 import javax.inject.Inject
 
 /**
@@ -64,7 +64,7 @@ class TrackingViewModel @Inject constructor(
                 
                 // Create new trip
                 val trip = Trip(
-                    startTime = LocalDateTime.now(),
+                    startTime = Date(),
                     isCompleted = false
                 )
                 currentTripId = tripRepository.insertTrip(trip)
@@ -119,7 +119,7 @@ class TrackingViewModel @Inject constructor(
             if (currentTripId > 0) {
                 val currentTrip = tripRepository.getTripById(currentTripId)
                 currentTrip?.let { trip ->
-                    val endTime = LocalDateTime.now()
+                    val endTime = Date()
                     val duration = System.currentTimeMillis() - trackingStartTime
                     
                     val completedTrip = trip.copy(

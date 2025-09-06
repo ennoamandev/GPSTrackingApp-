@@ -11,7 +11,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
-import java.time.LocalDateTime
+import java.util.Date
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.math.abs
@@ -138,7 +138,7 @@ class LocationManager @Inject constructor(
                     speed = it.speed,
                     accuracy = it.accuracy,
                     bearing = it.bearing,
-                    timestamp = LocalDateTime.now(),
+                    timestamp = Date(),
                     isMoving = it.speed > 0.5f
                 )
             }
@@ -165,7 +165,7 @@ class LocationManager @Inject constructor(
                         speed = location.speed,
                         accuracy = location.accuracy,
                         bearing = location.bearing,
-                        timestamp = LocalDateTime.now(),
+                        timestamp = Date(),
                         isMoving = location.speed > 0.5f // Consider moving if speed > 0.5 m/s
                     )
                     trySend(locationPoint)
@@ -211,7 +211,7 @@ class LocationManager @Inject constructor(
                     speed = it.speed,
                     accuracy = it.accuracy,
                     bearing = it.bearing,
-                    timestamp = LocalDateTime.now(),
+                    timestamp = Date(),
                     isMoving = it.speed > 0.5f
                 )
             }
